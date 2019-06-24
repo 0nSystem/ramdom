@@ -82,8 +82,7 @@ function instalacion_comunicacion {
 		read opcion
 		case $opcion in
 			1)
-			wget -O Descargas/discord.deb https://discordapp.com/api/download?platform=linux&format=deb
-			sudo dpkg -i Descargas/discord.deb && sudo apt-get --fix-broken install -y;;
+			sudo snap install discord;;
 			2)
 			wget -O Descargas/skype.deb https://go.skype.com/skypeforlinux-64.deb
 			sudo dpkg -i Descargas/skype.deb && sudo apt-get --fix-broken install -y;;
