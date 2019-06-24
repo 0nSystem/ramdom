@@ -19,7 +19,7 @@ echo -e "\e[35mSe creara una carpeta llamada Programas, ejecutar sin superusuari
 ##Funcion de instalacion y sus modulos ##
 #########################################
 function instalacion {
-	while [ $opcion -le 6 ]; do
+	while [ $opcion -le 5 ]; do
 		clear
 		echo -e "
 		\e[35m+-------------Instalacion-----------+
@@ -62,7 +62,8 @@ function instalacion_navegadores {
 			wget -O $HOME/Programas/tor.tar.xz https://www.torproject.org/dist/torbrowser/8.5.3/tor-browser-linux64-8.5.3_en-US.tar.xz;
 			cd $HOME/Programas
 			tar -xf tor.tar.xz
-			./tor-browser_en-US/start-tor-browser.desktop
+			sudo chmod 777 $HOME/Programas/tor-browser_en-US/start-tor-browser.desktop
+			./Programas/tor-browser_en-US/start-tor-browser.desktop
 			sudo mv start-tor-browser /etc/share/applications/;;
 		esac
 	done
@@ -157,9 +158,19 @@ function instalacion_drivers {
 		\e[31m-> 1.Nvidia Grafica
 		\e[31m-> 2.Razer
 		\e[35m+------------------------------------+"
+		read opcion
 		case $opcion in
 			1)
 			sudo add-apt-repository ppa:graphics-drivers/ppa;;
+			2)
+			var_texto=""
+			sudo add-apt-repository ppa:openrazer/stable
+			sudo apt-get update && sudo apt-get install openrazer-meta
+			echo -e "\e[35m Dime el nombre de tu usuario"
+			read var_texto
+			sudo gpasswd -a $var_texto plugdev
+			sudo add-apt-repository ppa:polychromatic/stable
+			sudo apt-get update && sudo apt-get install polychromatic;;
 		esac
 	done
 }
