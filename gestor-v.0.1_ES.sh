@@ -64,7 +64,7 @@ function instalacion_navegadores {
 			tar -xf tor.tar.xz
 			sudo chmod 777 $HOME/Programas/tor-browser_en-US/start-tor-browser.desktop
 			./tor-browser_en-US/start-tor-browser.desktop
-			sudo mv start-tor-browser /etc/share/applications/;;
+			sudo mv start-tor-browser /usr/share/applications/;;
 		esac
 	done
 }
