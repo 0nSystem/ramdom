@@ -61,10 +61,7 @@ function instalacion_navegadores {
 			2)
 			wget -O $HOME/Programas/tor.tar.xz https://www.torproject.org/dist/torbrowser/8.5.3/tor-browser-linux64-8.5.3_en-US.tar.xz;
 			cd $HOME/Programas
-			tar -xf tor.tar.xz
-			sudo chmod 777 $HOME/Programas/tor-browser_en-US/start-tor-browser.desktop
-			./tor-browser_en-US/start-tor-browser.desktop
-			sudo mv start-tor-browser /usr/share/applications/;;
+			tar -xf tor.tar.xz;;
 		esac
 	done
 }
@@ -101,6 +98,8 @@ function instalacion_juegos {
 		\e[35m+---------------Juegos--------------+
 		\e[31m-> 1.Steam
 		\e[31m-> 2.WineHQ Staging (Ubuntu 18.04)
+		\e[31m-> 3.Lutris
+		\e[31m-> 4.PlayOnLinux
 		\e[35m+-----------------------------------+"
 		read opcion
 		case $opcion in
@@ -112,6 +111,19 @@ function instalacion_juegos {
 			sudo apt-key add winehq.key
 			sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'
 			sudo apt-get update && sudo apt install --install-recommends winehq-staging -y;;
+			3)
+			sudo add-apt-repository ppa:lutris-team/lutris
+			sudo apt-get update -y
+			sudo apt-get install lutris -y
+			sudo apt-get update -y
+			sudo apt install libvulkan1 libvulkan1:i386 -y
+			sudo apt install mesa-vulkan-drivers mesa-vulkan-drivers:i386 -y;;
+			4)
+			cd $HOME
+			wget -q "http://deb.playonlinux.com/public.gpg" -O- | sudo apt-key add -
+			sudo wget http://deb.playonlinux.com/playonlinux_bionic.list -O /etc/apt/sources.list.d/playonlinux.list
+			sudo apt-get update
+			sudo apt-get install playonlinux;;
 		esac
 	done
 }
