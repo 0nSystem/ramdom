@@ -1,0 +1,114 @@
+#!/bin/bash
+
+# Herramientas De Red, plantearse añadir zenity para una interfaz amigable
+##Funciones
+#Introduccion
+introduccion () {
+    toilet=$(sudo apt install -y toilet)
+    ${toilet}
+    clear
+    toilet "TheHiddenOnSystem" --filter border --gay && sleep 2
+    echo -e "Bienvenido a una pequeña aplicacion que contiene herramientas basicas de red\n"
+}
+#Dependencias
+function dependencias {
+    sudo apt install -y nmap bmon
+    read -rsp  $'Presiona [Enter] para continuar...\n'
+}
+#Funcion NMAP
+function nmap {
+    opcionNMAP=("Mostrar si el dispositivo esta conectado" "Analisis de puertos" "Analizar S.O" "Salir")
+    direccion="x.x.x.x"
+
+    clear
+    select opcionNMAP in "${opcionNMAP[@]}"; do
+        case $opcionNMAP in
+        "Mostrar si el dispositivo esta conectado")
+            echo -e "Diga una direccion de dominio, IP o un rango a escanear" && read direccion
+            sudo nmap -sP $direccion --traceroute
+            read -rsp $'Presiona [Enter] para continuar...\n'
+            break;;
+        "Analisis de puertos")
+            echo -e "Diga una direccion de dominio, Ip o un rango a escanear" && read direccion
+            sudo nmap -Pn $direccion --traceroute
+            read -rsp $'Presiona [Enter] para continuar...\n'
+            break;;
+        "Analizar S.O")
+            echo -e "Diga una direccion de dominio, Ip o un rango a escanear" && read direccion
+            sudo nmap -O $direccion --traceroute
+            read -rsp $'Presiona [Enter] para continuar...\n'
+            break;;
+        "Salir")
+            echo -e "Saliendo"
+            break;;
+        esac
+    done
+}
+#Funcion DNS para usar nslookup, dig, host
+function dns {
+    resolucionDominio=""
+    opcionDNS=("Resolver nombre de Dominio" "Salir")
+
+    clear
+    select opcionDNS in "${opcionDNS[@]}"; do
+        case $opcionDNS in
+            "Resolver nombre de Dominio")
+            echo -e "Diga un nombre de dominio para resolverlo" && read resolucionDominio
+            sudo nslookup $resolucionDominio
+            read -rsp $'Presiona [Enter] para continuar...\n'
+            break;;
+            "Salir")
+            echo -e "Saliendo"
+            break;;
+        esac
+    done
+}
+function tcpdump {
+    filtroTCPDUMP=""
+    opcionTCPDUMP=("Interfaces" "Basico" "Filtrado" "Salir")
+    clear
+    select opcionTCPDUMP in "${opcionTCPDUMP[@]}"; do
+        case $opcionTCPDUMP in
+            "Interfaces")
+            sudo tcpdump -D
+            break;;
+            "Basicas")
+            sudo tcpdump
+            break;;
+            "Filtrado")
+            echo -e "Añadir filtro" && read filtroTCPDUMP
+            sudo tcpdump '$filtroTCPDUMP'
+            break;;
+            "Salir")
+            echo -e "Saliendo"
+            break;;
+        esac
+    done
+}
+
+###Main
+let opcionesSelect
+while : ; do
+    clear
+    introduccion
+    select opcionesSelect in "Dependencias" "NMAP" "NSLOOKUP" "TCPDUMP" "SALIR"; do
+        case $opcionesSelect in
+        "Dependencias")
+            dependencias
+            break;;
+        "NMAP")
+            nmap
+            break;;
+        "NSLOOKUP")
+            dns
+            break;;
+        "TCPDUMP")
+            tcpdump
+            break;;
+        "Salir")
+            echo -e "Saliendo..."
+            break;;
+        esac
+        clear
+    done
+done
