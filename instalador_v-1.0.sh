@@ -72,7 +72,7 @@ function instalacion_apt {
 	echo -e "\n"
 }
 function instalacion_snap {
-	lista_snap_classic=("code" "discord")
+	lista_snap_classic=("code" "discord" "eclipse")
 	lista_snap=("mc-installer")
 	
 	clear
