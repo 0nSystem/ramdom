@@ -48,7 +48,7 @@ function instalacion_apt {
 	#Comprobacion
 	for i in ${lista_apt[@]}
 	do
-		whereis $i >& /dev/null
+		which $i >& /dev/null
 		if [ $? == 0 ]
 		then
 			echo -ne "\n\t[${color_verde}V${color_reset}]"
@@ -62,7 +62,7 @@ function instalacion_apt {
 	echo -ne "\n\t${color_verde}Instalando ${color_reset}"
 	for i in ${lista_apt[@]}
 	do
-		whereis $i >& /dev/null
+		which $i >& /dev/null
 		if [ $? != 0 ]
 		then
 			debconf -f non-interactive apt-get install -y $i >& /dev/null 2>&1
