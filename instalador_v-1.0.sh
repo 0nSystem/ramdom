@@ -41,12 +41,14 @@ function presentacion {
 	done
 }
 function instalacion_apt {
-	lista_apt=("git" "zsh" "tmux" "nmap" "macchanger" "openjdk-11-jdk" "openjdk-11-jre" "openjdk-8-jdk" "openjdk-8-jre" "libimage-exiftool-perl" "libreoffice")
+	lista_normal=("git" "zsh" "tmux" "nmap" "macchanger" "libreoffice" "gimp" "wireshark")
+	lista_java=("openjdk-11-jdk" "openjdk-11-jre" "openjdk-8-jdk" "openjdk-8-jre") #Esta requiere de test para la comprobacion
+	
 	clear
 	echo -e "\n\t${color_azul}Herramientas de instalacion por APT${color_reset}"
 	#Tambien en un futuro seria buena idea poder implementar mas repositorios para añadir mas a la lista
 	#Comprobacion
-	for i in ${lista_apt[@]}
+	for i in ${lista_normal[@]}
 	do
 		which $i >& /dev/null
 		if [ $? == 0 ]
@@ -57,16 +59,94 @@ function instalacion_apt {
 		fi
 		echo -e " $i"
 	done
+	for i in ${lista_java[@]}
+	do
+		case $i in
+			"openjdk-11-jdk")
+				test -e /usr/lib/jvm/java-11*
+				if [ $? == 0 ]
+				then
+					echo -en "\n\t[${color_verde}V${color_reset}]"
+				else
+					echo -ne "\n\t[${color_verde}X${color_reset}]"
+				fi
+				;;
+			"openjdk-11-jre")
+				test -e /usr/lib/jvm/java-11*
+				if [ $? == 0  ]
+				then
+					echo -ne "\n\t[${color_verde}V${color_reset}]"
+				else
+					echo -ne "\n\t[${color_verde}X${color_reset}]"
+				fi
+				;;
+			"openjdk-8-jdk")
+				test -e /usr/lib/jvm/java-8*
+				if [ $? == 0 ]
+				then
+					echo -ne "\n\t[${color_verde}V${color_reset}]"
+				else
+					echo -ne "\n\t[${color_rojo}X${color_reset}]"
+				fi
+				;;
+			"openjdk-8-jre")
+				test -e /usr/lib/jvm/java-8*
+				if [ $? == 0 ]
+				then
+					echo -ne "\n\t[${color_verde}V${color_reset}]"
+				else
+					echo -ne "\n\t[${color_rojo}X${color_reset}]"
+				fi
+				;;
+				
+		esac
+		echo -e " $i"
+	done
 	echo -e "\n\t${color_verde}Pulsa cualquier tecla para instalar los paquetes que faltan${color_reset}"; read;
+	
 	#Instalacion
 	echo -ne "\n\t${color_verde}Instalando ${color_reset}"
-	for i in ${lista_apt[@]}
+	for i in ${lista_normal[@]}
 	do
 		which $i >& /dev/null
 		if [ $? != 0 ]
 		then
 			debconf -f non-interactive apt-get install -y $i >& /dev/null 2>&1
 		fi
+		echo -ne "${color_rojo}.${color_reset}"; sleep 0.2
+	done
+	for i in ${lista_java[@]}
+	do
+		case $i in
+			"openjdk-11-jdk")
+				test -e /usr/lib/jvm/java-11*
+				if [ $? != 0 ]
+				then
+					apt-get install -y $i &> /dev/null 2>1
+				fi
+				;;
+			"openjdk-11-jre")
+				test -e /usr/lib/jvm/java-11*
+				if [ $? != 0 ]
+				then
+					apt-get install -y $i &> /dev/null 2>1
+				fi
+				;;
+			"openjdk-8-jdk")
+				test -e /usr/lib/jvm/java-8*
+				if [ $? != 0 ]
+				then
+					apt-get install -y $i &> /dev/null 2>1
+				fi
+				;;
+			"openjdk-8-jre")
+				test -e /usr/lib/jvm/java-8*
+				if [ $? == 0 ]
+				then
+					apt-get install -y $i &> /dev/null 2>1
+				fi
+				;;
+		esac
 		echo -ne "${color_rojo}.${color_reset}"; sleep 0.2
 	done
 	echo -e "\n"
