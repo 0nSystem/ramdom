@@ -1,4 +1,5 @@
 #/usr/bin/python3.8
+#Requiere install exiftool y el editor gedit estaria bien prescindir del editor y mostra la info por un label
 import tkinter,tkinter.filedialog,os
 #mejora, ajustar importacion Tk,label,button,os.system
 
